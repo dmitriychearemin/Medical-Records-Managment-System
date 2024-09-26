@@ -111,8 +111,8 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
                 System.out.println("Введите номер рецепта");
                 int number;
                 number = scanner.nextInt();
-                if(ListPrescription.get(number-1) != null){
-                    ListPrescription.remove(number);
+                if(number > 0 && number <= ListPrescription.size()){
+                    ListPrescription.remove(number-1);
                 }
                 else{
                     System.out.println("Элемент не был найден");

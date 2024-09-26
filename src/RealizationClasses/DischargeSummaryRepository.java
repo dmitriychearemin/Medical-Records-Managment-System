@@ -112,8 +112,8 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
                 System.out.println("Введите номер выписки");
                 int number;
                 number = scanner.nextInt();
-                if(ListDishargeSummary.get(number-1) != null){
-                    ListDishargeSummary.remove(number);
+                if(number > 0 && number <= ListDishargeSummary.size()){
+                    ListDishargeSummary.remove(number-1);
                 }
                 else{
                     System.out.println("Элемент не был найден");

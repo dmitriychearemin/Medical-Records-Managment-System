@@ -114,8 +114,8 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
                 System.out.println("Введите номер анализа");
                 int number;
                 number = scanner.nextInt();
-                if(ListLabReport.get(number-1) != null){
-                    ListLabReport.remove(number);
+                if(number > 0 && number <= ListLabReport.size()){
+                    ListLabReport.remove(number-1);
                 }
                 else{
                     System.out.println("Элемент не был найден");
