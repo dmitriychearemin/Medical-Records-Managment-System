@@ -3,6 +3,8 @@ package RealizationClasses;
 import Entities.DischargeSummary;
 import Entities.LabReport;
 import Entities.Prescription;
+import HelperClasses.EnterDate;
+import HelperClasses.EnterFullName;
 import Interfaces.SearchableMedicalRepository;
 
 import java.util.LinkedList;
@@ -14,7 +16,8 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
 
     private List<LabReport> ListLabReport = new LinkedList<>();
     Scanner scanner = new Scanner(System.in);
-
+    EnterFullName enterFullName;
+    EnterDate enterDate;
 
     @Override
     public LabReport SearchRecording(String date, String fullName) {
@@ -46,46 +49,42 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     @Override
     public void UpdateRecording() {
 
-        System.out.print("Введите дату анализа (ДД.ММ.ГГГГ): ");
-        String date = scanner.nextLine();
+        String date = enterDate.enterDate();
 
-        System.out.print("Введите полное имя пациента: ");
-        String name = scanner.nextLine();
+        String fullName =  enterFullName.enterFullName();
 
-        LabReport labReport = SearchRecording(date,name);
+        LabReport labReport = SearchRecording(date,fullName);
 
-        System.out.print("Введите старую или изменённую дату анализа (ДД.ММ.ГГГГ): ");
-        date = scanner.nextLine();
 
-        System.out.print("Введите старую или изменённое ФИО пациента: ");
-        name = scanner.nextLine();
+        System.out.print("Обновлённая запись: ");
 
-        System.out.print("Введите старые или изменённые результаты анализа: ");
+        date = enterDate.enterDate();
+
+        fullName =  enterFullName.enterFullName();
+
+        System.out.print("Введите результаты анализа: ");
         String analys = scanner.nextLine();
 
         labReport.setDate(date);
         labReport.setAnalysResult(analys);
-        labReport.setFullNamePatient(name);
+        labReport.setFullNamePatient(fullName);
 
     }
 
     @Override
     public void AddNewRecording() {
-        System.out.print("Введите дату выписки (ДД.ММ.ГГГГ): ");
-        String date = scanner.nextLine();
-
-        System.out.print("Введите полное имя: ");
-        String name = scanner.nextLine();
+        String date = enterDate.enterDate();
+        String fullName =  enterFullName.enterFullName();
 
         System.out.print("Введите результаты анализа: ");
         String analysResult = scanner.nextLine();
 
-        LabReport labReport = new LabReport(date,name,analysResult);
+        LabReport labReport = new LabReport(date,fullName,analysResult);
         ListLabReport.add(labReport);
 
         System.out.println("Вы ввели:");
         System.out.println("Дата выписки: " + date);
-        System.out.println("Имя: " + name);
+        System.out.println("Имя: " + fullName);
         System.out.println("Комментарий: " + analysResult);
     }
 
@@ -93,8 +92,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     public void ReadRecordings() {
         System.out.println("Все Анализы");
         for(int i =0; i<ListLabReport.size();i++){
-            System.out.println("Номер анализа: " + i + "Дата анализа: " + ListLabReport.get(i).getDate() +
-                    "ФИО: " + ListLabReport.get(i).getFullNamePatient() + "Результат анализов: " + ListLabReport.get(i).getAnalysResult());
+            System.out.println("Номер анализа: " + i + ListLabReport.get(i).toString());
 
         }
 
@@ -120,13 +118,9 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
         }
 
         else if(opredelitel == 2){
-            System.out.print("Введите дату анализа (ДД.ММ.ГГГГ): ");
-            String date = scanner.nextLine();
-
-            System.out.print("Введите полное имя: ");
-            String name = scanner.nextLine();
-
-            LabReport labReport = SearchRecording(date,name);
+            String date = enterDate.enterDate();
+            String fullName =  enterFullName.enterFullName();
+            LabReport labReport = SearchRecording(date,fullName);
 
             if(labReport != null){
                 ListLabReport.remove(labReport);

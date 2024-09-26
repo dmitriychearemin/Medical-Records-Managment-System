@@ -3,6 +3,8 @@ package RealizationClasses;
 import Entities.DischargeSummary;
 import Entities.LabReport;
 import Entities.Prescription;
+import HelperClasses.EnterDate;
+import HelperClasses.EnterFullName;
 import Interfaces.SearchableMedicalRepository;
 
 import java.util.LinkedList;
@@ -13,10 +15,12 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
 
     private List<Prescription> ListPrescription = new LinkedList<>();
     Scanner scanner = new Scanner(System.in);
+    EnterFullName enterFullName;
+    EnterDate enterDate;
 
     @Override
     public Prescription SearchRecording(String date, String fullName) {
-        for (Prescription prescription : ListPrescription){
+        for (Prescription prescription: ListPrescription){
             if(prescription.getDate() == date && prescription.getFullNamePatient() == fullName){
                 return prescription;
             }
@@ -41,46 +45,39 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
 
     @Override
     public void UpdateRecording() {
-        System.out.print("Введите дату рецепта (ДД.ММ.ГГГГ): ");
-        String date = scanner.nextLine();
 
-        System.out.print("Введите полное имя пациента: ");
-        String name = scanner.nextLine();
+        String date = enterDate.enterDate();
+        String fullName =  enterFullName.enterFullName();
 
-        Prescription prescription = SearchRecording(date,name);
+        Prescription prescription = SearchRecording(date,fullName);
 
-        System.out.print("Введите старую или изменённую дату рецепта (ДД.ММ.ГГГГ): ");
-        date = scanner.nextLine();
-
-        System.out.print("Введите старое или изменённое ФИО пациента: ");
-        name = scanner.nextLine();
-
-        System.out.print("Введите старый или изменённый рецепт: ");
+        System.out.print("Обновлённая запись: ");
+        date = enterDate.enterDate();
+        fullName =  enterFullName.enterFullName();
+        System.out.print("Введите рецепт: ");
         String recipe = scanner.nextLine();
 
         prescription.setDate(date);
         prescription.setRecipe(recipe);
-        prescription.setFullNamePatient(name);
+        prescription.setFullNamePatient(fullName);
     }
 
     @Override
     public void AddNewRecording() {
 
-        System.out.print("Введите дату выписки (ДД.ММ.ГГГГ): ");
-        String date = scanner.nextLine();
+        String date = enterDate.enterDate();
 
-        System.out.print("Введите полное имя: ");
-        String name = scanner.nextLine();
+        String fullName =  enterFullName.enterFullName();
 
         System.out.print("Введите результаты анализа: ");
         String recipe = scanner.nextLine();
 
-        Prescription prescription = new Prescription(date,name,recipe);
+        Prescription prescription = new Prescription(date,fullName,recipe);
         ListPrescription.add(prescription);
 
         System.out.println("Вы ввели:");
         System.out.println("Дата выписки: " + date);
-        System.out.println("Имя: " + name);
+        System.out.println("Имя: " + fullName);
         System.out.println("Комментарий: " + recipe);
 
     }
@@ -89,9 +86,7 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
     public void ReadRecordings() {
         System.out.println("Все Рецепты");
         for(int i =0; i<ListPrescription.size();i++){
-            System.out.println("Номер рецепта: " + i + "Дата рецепта: " + ListPrescription.get(i).getDate() +
-                    "ФИО: " + ListPrescription.get(i).getFullNamePatient() + "Рецепт: " + ListPrescription.get(i).getRecipe());
-
+            System.out.println("Номер рецепта: " + i + ListPrescription.get(i).toString());
         }
     }
 
@@ -115,13 +110,10 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
         }
 
         else if(opredelitel == 2){
-            System.out.print("Введите дату рецепта (ДД.ММ.ГГГГ): ");
-            String date = scanner.nextLine();
+            String date = enterDate.enterDate();
+            String fullName =  enterFullName.enterFullName();
 
-            System.out.print("Введите полное имя: ");
-            String name = scanner.nextLine();
-
-            Prescription prescription = SearchRecording(date,name);
+            Prescription prescription = SearchRecording(date,fullName);
 
             if(prescription != null){
                 ListPrescription.remove(prescription);

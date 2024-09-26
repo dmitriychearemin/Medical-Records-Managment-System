@@ -36,4 +36,10 @@ public class LabReport {
     public String getFullNamePatient() {
         return FullNamePatient;
     }
+
+    public String toString() {
+        String string = "Дата анализа: " + Date +
+                "ФИО: " + FullNamePatient + "Результаты анализа: " + AnalysResult;
+        return string;
+    }
 }

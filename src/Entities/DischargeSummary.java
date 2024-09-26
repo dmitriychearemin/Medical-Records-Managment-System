@@ -35,4 +35,11 @@ public class DischargeSummary {
     public String getFullName() {
         return FullName;
     }
+
+    @Override
+    public String toString() {
+        String string = "Дата выписки: " + Date +
+                "ФИО: " + FullName + "Комментарий к выписке: " + Commentaries;
+        return string;
+    }
 }

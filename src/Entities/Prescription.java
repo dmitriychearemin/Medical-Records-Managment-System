@@ -35,5 +35,11 @@ public class Prescription {
     public String getRecipe() {
         return Recipe;
     }
+
+    public String toString() {
+        String string = "Дата рецепта: " + Date +
+                "ФИО: " + FullNamePatient + "Рецепт: " + Recipe;
+        return string;
+    }
 }
 
