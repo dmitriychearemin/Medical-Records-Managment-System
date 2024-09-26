@@ -107,33 +107,36 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
         System.out.println("Если хотите удалить выписку по ФИО и Дате - 2");
         opredelitel = scanner.nextInt();
 
-        if(opredelitel == 1){
-            System.out.println("Введите номер выписки");
-            int number;
-            number = scanner.nextInt();
-            if(ListDishargeSummary.get(number-1) != null){
-                ListDishargeSummary.remove(number);
-            }
-            else{
-                System.out.println("Элемент не был найден");
-            }
+        switch (opredelitel){
+            case 1:
+                System.out.println("Введите номер выписки");
+                int number;
+                number = scanner.nextInt();
+                if(ListDishargeSummary.get(number-1) != null){
+                    ListDishargeSummary.remove(number);
+                }
+                else{
+                    System.out.println("Элемент не был найден");
+                }
+                break;
+
+            case 2:
+                String date = enterDate.enterDate();
+                String fullName =  enterFullName.enterFullName();
+
+                DischargeSummary dischargeSummary = SearchRecording(date,fullName);
+
+                if(dischargeSummary != null){
+                    ListDishargeSummary.remove(dischargeSummary);
+                }
+                else{
+                    System.out.println("Элемент не был найден");
+                }
+                break;
+
+            default:
+                System.out.println("Некорректный номер функции повторите попытку");
+                break;
         }
-
-        else if(opredelitel == 2){
-
-            String date = enterDate.enterDate();
-            String fullName =  enterFullName.enterFullName();
-
-            DischargeSummary dischargeSummary = SearchRecording(date,fullName);
-
-            if(dischargeSummary != null){
-                ListDishargeSummary.remove(dischargeSummary);
-            }
-            else{
-                System.out.println("Элемент не был найден");
-            }
-
-        }
-
     }
 }

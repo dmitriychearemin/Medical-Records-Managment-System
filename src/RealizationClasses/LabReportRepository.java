@@ -109,32 +109,37 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
         System.out.println("Если хотите удалить анализ по ФИО и Дате - 2");
         opredelitel = scanner.nextInt();
 
-        if(opredelitel == 1){
-            System.out.println("Введите номер анализа");
-            int number;
-            number = scanner.nextInt();
-            if(ListLabReport.get(number-1) != null){
-                ListLabReport.remove(number);
-            }
-            else{
-                System.out.println("Элемент не был найден");
-            }
+        switch (opredelitel){
+            case 1:
+                System.out.println("Введите номер анализа");
+                int number;
+                number = scanner.nextInt();
+                if(ListLabReport.get(number-1) != null){
+                    ListLabReport.remove(number);
+                }
+                else{
+                    System.out.println("Элемент не был найден");
+                }
+                break;
+
+
+            case 2:
+                String date = enterDate.enterDate();
+                String fullName =  enterFullName.enterFullName();
+                LabReport labReport = SearchRecording(date,fullName);
+
+                if(labReport != null){
+                    ListLabReport.remove(labReport);
+                }
+                else{
+                    System.out.println("Элемент не был найден");
+                }
+                break;
+
+            default:
+                System.out.println("Некорректный номер функции повторите попытку");
+                break;
         }
-
-        else if(opredelitel == 2){
-            String date = enterDate.enterDate();
-            String fullName =  enterFullName.enterFullName();
-            LabReport labReport = SearchRecording(date,fullName);
-
-            if(labReport != null){
-                ListLabReport.remove(labReport);
-            }
-            else{
-                System.out.println("Элемент не был найден");
-            }
-
-        }
-
-
+        
     }
 }
