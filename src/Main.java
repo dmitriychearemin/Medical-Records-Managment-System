@@ -12,14 +12,18 @@ import HelperClasses.EnterFullName;
 import RealizationClasses.DischargeSummaryRepository;
 import RealizationClasses.LabReportRepository;
 import RealizationClasses.PrescriptionRepository;
-
+//import jline.console.ConsoleReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         DischargeSummaryRepository dischargeSummaryRepository = new DischargeSummaryRepository();
         LabReportRepository labReportRepository = new LabReportRepository();
         PrescriptionRepository prescriptionRepository = new PrescriptionRepository();
+
 
         UserInterface(dischargeSummaryRepository,labReportRepository,prescriptionRepository);
 
@@ -34,13 +38,13 @@ public class Main {
 
     static void UserInterface(DischargeSummaryRepository dischargeSummaryRepository,
                               LabReportRepository labReportRepository,
-                              PrescriptionRepository prescriptionRepository){
+                              PrescriptionRepository prescriptionRepository) throws IOException, InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
-        int opredelitel1 = 0, opredelitel2 = 0;
+        int opredelitel1, opredelitel2;
         EnterDate enterDate = new EnterDate();
         EnterFullName enterFullName = new EnterFullName();
-
+        //ConsoleReader reader = new ConsoleReader();
         while(true){
 
             System.out.println("Создать запись - 1");
@@ -49,16 +53,22 @@ public class Main {
             System.out.println("Удалить запись - 4");
             System.out.println("Найти запись - 5");
             System.out.println("Сортировка записей - 6");
-            scanner.nextInt(opredelitel1);
+            System.out.println("Очистка консоли - 7");
+            opredelitel1 = scanner.nextInt();
+
+            /*if(opredelitel1 ==7){
+                reader.clearScreen();
+                continue;
+            }*/
 
             System.out.println("Работа с рецептами - 1");
             System.out.println("Работа с выписками - 2");
             System.out.println("Работа с анализами - 3");
-            scanner.nextInt(opredelitel2);
+            opredelitel2 = scanner.nextInt();
 
             switch (opredelitel2){
                 case 1:
-                    switch (opredelitel2) {
+                    switch (opredelitel1) {
                         case 1:
                             prescriptionRepository.AddNewRecording();
                             break;
@@ -74,12 +84,14 @@ public class Main {
                         case 5:
                             String date = enterDate.enterDate();
                             String name = enterFullName.enterFullName();
-
-                            prescriptionRepository.SearchRecording(date,name);
+                            System.out.println(prescriptionRepository.SearchRecording(date,name));
                             break;
 
                         case 6:
                             prescriptionRepository.SortRecordings();
+                            break;
+                        default:
+                            System.out.println("Некорректный номер функции повторите попытку");
                             break;
                     }
                     break;
@@ -101,10 +113,13 @@ public class Main {
                         case 5:
                             String date = enterDate.enterDate();
                             String name = enterFullName.enterFullName();
-                            dischargeSummaryRepository.SearchRecording(date,name);
+                            System.out.println(dischargeSummaryRepository.SearchRecording(date,name).toString());
                             break;
                         case 6:
                             dischargeSummaryRepository.SortRecordings();
+                            break;
+                        default:
+                            System.out.println("Некорректный номер функции повторите попытку");
                             break;
                     }
                     break;
@@ -126,12 +141,20 @@ public class Main {
                         case 5:
                             String date = enterDate.enterDate();
                             String name = enterFullName.enterFullName();
-                            labReportRepository.SearchRecording(date, name);
+                            System.out.println(labReportRepository.SearchRecording(date, name).toString());
+
                             break;
                         case 6:
                             labReportRepository.SortRecordings();
                             break;
+                        default:
+                            System.out.println("Некорректный номер функции повторите попытку");
+                            break;
                     }
+                    break;
+
+                default:
+                    System.out.println("Некорректный номер функции повторите попытку");
                     break;
             }
 

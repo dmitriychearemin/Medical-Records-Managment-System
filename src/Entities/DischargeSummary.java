@@ -38,8 +38,8 @@ public class DischargeSummary {
 
     @Override
     public String toString() {
-        String string = "Дата выписки: " + Date +
-                "ФИО: " + FullName + "Комментарий к выписке: " + Commentaries;
+        String string = " Дата выписки: " + Date +
+                " ФИО: " + FullName + " Комментарий к выписке: " + Commentaries;
         return string;
     }
 }

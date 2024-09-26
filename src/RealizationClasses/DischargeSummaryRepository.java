@@ -7,6 +7,7 @@ import Interfaces.SearchableMedicalRepository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DischargeSummaryRepository implements SearchableMedicalRepository<DischargeSummary> {
@@ -21,7 +22,7 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     public DischargeSummary SearchRecording(String date, String fullName) {
 
         for (DischargeSummary dischargeSummary : ListDishargeSummary){
-            if(dischargeSummary.getDate() == date && dischargeSummary.getFullName() == fullName){
+            if(Objects.equals(dischargeSummary.getDate(), date) && Objects.equals(dischargeSummary.getFullName(), fullName)){
                 return dischargeSummary;
             }
         }
@@ -47,21 +48,27 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     public void UpdateRecording() {
 
         String date = enterDate.enterDate();
-
         String fullName =  enterFullName.enterFullName();
 
         DischargeSummary dischargeSummary = SearchRecording(date,fullName);
 
-        System.out.print("Обновлённая запись: ");
-        date = enterDate.enterDate();
-        fullName = scanner.nextLine();
-        System.out.print("Введите результаты выписки: ");
-        String commentaries = scanner.nextLine();
+        if(dischargeSummary!=null) {
+            System.out.print("Запись была найдена: \n");
+            System.out.print("Ввод обновлённой записи: ");
 
-        dischargeSummary.setDate(date);
-        dischargeSummary.setCommentaries(commentaries);
-        dischargeSummary.setFullName(fullName);
+            System.out.print("Обновлённая запись: ");
+            date = enterDate.enterDate();
+            fullName = enterFullName.enterFullName();
+            System.out.print("Введите результаты выписки: ");
+            String commentaries = scanner.nextLine();
 
+            dischargeSummary.setDate(date);
+            dischargeSummary.setCommentaries(commentaries);
+            dischargeSummary.setFullName(fullName);
+        }
+        else{
+            System.out.print("Такой записи не существует: ");
+        }
 
     }
 
@@ -69,7 +76,6 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     public void AddNewRecording() {
 
        String date = enterDate.enterDate();
-
         String fullName =  enterFullName.enterFullName();
 
         System.out.print("Введите комментарий: ");
@@ -89,7 +95,7 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     public void ReadRecordings() {
         System.out.println("Все выписки");
         for(int i =0; i<ListDishargeSummary.size();i++){
-            System.out.println("Номер выписки: " + i + ListDishargeSummary.get(i).toString());
+            System.out.println("Номер выписки: " + (i+1) + ListDishargeSummary.get(i).toString());
         }
     }
 
@@ -99,13 +105,13 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
         int opredelitel = 0;
         System.out.println("Если хотите удалить выписку по номеру - 1");
         System.out.println("Если хотите удалить выписку по ФИО и Дате - 2");
-        scanner.nextInt(opredelitel);
+        opredelitel = scanner.nextInt();
 
         if(opredelitel == 1){
             System.out.println("Введите номер выписки");
-            int number = 0;
-            scanner.nextInt(number);
-            if(ListDishargeSummary.get(number) != null){
+            int number;
+            number = scanner.nextInt();
+            if(ListDishargeSummary.get(number-1) != null){
                 ListDishargeSummary.remove(number);
             }
             else{
@@ -116,7 +122,6 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
         else if(opredelitel == 2){
 
             String date = enterDate.enterDate();
-
             String fullName =  enterFullName.enterFullName();
 
             DischargeSummary dischargeSummary = SearchRecording(date,fullName);

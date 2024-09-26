@@ -9,6 +9,7 @@ import Interfaces.SearchableMedicalRepository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class LabReportRepository implements SearchableMedicalRepository<LabReport> {
@@ -22,7 +23,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     @Override
     public LabReport SearchRecording(String date, String fullName) {
         for (LabReport labReport : ListLabReport){
-            if(labReport.getDate() == date && labReport.getFullNamePatient() == fullName){
+            if(Objects.equals(labReport.getDate(), date) && Objects.equals(labReport.getFullNamePatient(), fullName)){
                 return labReport;
             }
         }
@@ -50,24 +51,27 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     public void UpdateRecording() {
 
         String date = enterDate.enterDate();
-
         String fullName =  enterFullName.enterFullName();
 
         LabReport labReport = SearchRecording(date,fullName);
 
+        if(labReport!=null){
+            System.out.print("Запись была найдена: \n");
+            System.out.print("Ввод обновлённой записи: ");
+            date = enterDate.enterDate();
+            fullName =  enterFullName.enterFullName();
 
-        System.out.print("Обновлённая запись: ");
+            System.out.print("Введите результаты анализа: ");
+            String analys = scanner.nextLine();
 
-        date = enterDate.enterDate();
+            labReport.setDate(date);
+            labReport.setAnalysResult(analys);
+            labReport.setFullNamePatient(fullName);
+        }
+        else{
+            System.out.print("Такой записи не существует: ");
+        }
 
-        fullName =  enterFullName.enterFullName();
-
-        System.out.print("Введите результаты анализа: ");
-        String analys = scanner.nextLine();
-
-        labReport.setDate(date);
-        labReport.setAnalysResult(analys);
-        labReport.setFullNamePatient(fullName);
 
     }
 
@@ -92,7 +96,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     public void ReadRecordings() {
         System.out.println("Все Анализы");
         for(int i =0; i<ListLabReport.size();i++){
-            System.out.println("Номер анализа: " + i + ListLabReport.get(i).toString());
+            System.out.println("Номер анализа: " + (i+1) + ListLabReport.get(i).toString());
 
         }
 
@@ -103,13 +107,13 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
         int opredelitel = 0;
         System.out.println("Если хотите удалить анализ по номеру - 1");
         System.out.println("Если хотите удалить анализ по ФИО и Дате - 2");
-        scanner.nextInt(opredelitel);
+        opredelitel = scanner.nextInt();
 
         if(opredelitel == 1){
             System.out.println("Введите номер анализа");
-            int number = 0;
-            scanner.nextInt(number);
-            if(ListLabReport.get(number) != null){
+            int number;
+            number = scanner.nextInt();
+            if(ListLabReport.get(number-1) != null){
                 ListLabReport.remove(number);
             }
             else{

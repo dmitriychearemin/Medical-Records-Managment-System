@@ -37,8 +37,8 @@ public class Prescription {
     }
 
     public String toString() {
-        String string = "Дата рецепта: " + Date +
-                "ФИО: " + FullNamePatient + "Рецепт: " + Recipe;
+        String string = " Дата рецепта: " + Date +
+                " ФИО: " + FullNamePatient + " Рецепт: " + Recipe;
         return string;
     }
 }

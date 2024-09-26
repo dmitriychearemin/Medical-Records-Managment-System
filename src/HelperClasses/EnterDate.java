@@ -9,7 +9,7 @@ public class EnterDate {
         Scanner scanner = new Scanner(System.in);
         String date;
         while (true){
-            System.out.print("Введите дату (ДД.ММ.ГГГГ): ");
+             System.out.print("Введите дату (ДД.ММ.ГГГГ): ");
              date = scanner.nextLine();
              if(isValidDate(date)){
                  return date;

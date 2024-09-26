@@ -38,8 +38,8 @@ public class LabReport {
     }
 
     public String toString() {
-        String string = "Дата анализа: " + Date +
-                "ФИО: " + FullNamePatient + "Результаты анализа: " + AnalysResult;
+        String string = " Дата анализа: " + Date +
+                " ФИО: " + FullNamePatient + " Результаты анализа: " + AnalysResult;
         return string;
     }
 }
