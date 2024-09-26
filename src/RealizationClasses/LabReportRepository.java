@@ -140,6 +140,6 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
                 System.out.println("Некорректный номер функции повторите попытку");
                 break;
         }
-        
+
     }
 }

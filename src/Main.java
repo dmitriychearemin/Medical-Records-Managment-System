@@ -24,13 +24,7 @@ public class Main {
         LabReportRepository labReportRepository = new LabReportRepository();
         PrescriptionRepository prescriptionRepository = new PrescriptionRepository();
 
-
         UserInterface(dischargeSummaryRepository,labReportRepository,prescriptionRepository);
-
-
-
-
-
 
     }
 
