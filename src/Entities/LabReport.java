@@ -1,6 +1,8 @@
 package Entities;
 
-public class LabReport {
+import Interfaces.EntitiesInterface;
+
+public class LabReport implements EntitiesInterface {
 
     private String Date;
     private String FullNamePatient;

@@ -59,7 +59,7 @@ public class Main {
             System.out.println("Работа с выписками - 2");
             System.out.println("Работа с анализами - 3");
             opredelitel2 = scanner.nextInt();
-
+            int opredelitel;
             switch (opredelitel2){
                 case 1:
                     switch (opredelitel1) {
@@ -76,9 +76,31 @@ public class Main {
                             prescriptionRepository.DeleteRecording();
                             break;
                         case 5:
-                            String date = enterDate.enterDate();
-                            String name = enterFullName.enterFullName();
-                            System.out.println(prescriptionRepository.SearchRecording(date,name));
+                            System.out.println("Поиск по датам - 1");
+                            System.out.println("Поиск по имени - 2");
+                            System.out.println("Поиск по имени и дате - 3");
+                            opredelitel = scanner.nextInt();
+                            String date, name;
+                            switch (opredelitel){
+                                case 1:
+                                    date = enterDate.enterDate();
+                                    prescriptionRepository.SearchRecordingToDate(date);
+                                    break;
+                                case 2:
+                                    name = enterFullName.enterFullName();
+                                    prescriptionRepository.SearchRecordingToName(name);
+                                    break;
+
+                                case 3:
+                                    date = enterDate.enterDate();
+                                    name = enterFullName.enterFullName();
+                                    prescriptionRepository.SearchRecording(date,name);
+                                    break;
+
+                                default:
+                                    System.out.println("Некорректный номер функции повторите попытку");
+                                    break;
+                            }
                             break;
 
                         case 6:
@@ -105,9 +127,32 @@ public class Main {
                             dischargeSummaryRepository.DeleteRecording();
                             break;
                         case 5:
-                            String date = enterDate.enterDate();
-                            String name = enterFullName.enterFullName();
-                            System.out.println(dischargeSummaryRepository.SearchRecording(date,name).toString());
+                            System.out.println("Поиск по датам - 1");
+                            System.out.println("Поиск по имени - 2");
+                            System.out.println("Поиск по имени и дате - 3");
+                            opredelitel = scanner.nextInt();
+                            String date, name;
+                            switch (opredelitel){
+                                case 1:
+                                    date = enterDate.enterDate();
+                                    dischargeSummaryRepository.SearchRecordingToDate(date);
+                                    break;
+                                case 2:
+                                    name = enterFullName.enterFullName();
+                                    dischargeSummaryRepository.SearchRecordingToName(name);
+                                    break;
+
+                                case 3:
+                                    date = enterDate.enterDate();
+                                    name = enterFullName.enterFullName();
+                                    dischargeSummaryRepository.SearchRecording(date,name);
+                                    break;
+
+                                default:
+                                    System.out.println("Некорректный номер функции повторите попытку");
+                                    break;
+                            }
+
                             break;
                         case 6:
                             dischargeSummaryRepository.SortRecordings();
@@ -133,9 +178,31 @@ public class Main {
                             labReportRepository.DeleteRecording();
                             break;
                         case 5:
-                            String date = enterDate.enterDate();
-                            String name = enterFullName.enterFullName();
-                            System.out.println(labReportRepository.SearchRecording(date, name).toString());
+                            System.out.println("Поиск по датам - 1");
+                            System.out.println("Поиск по имени - 2");
+                            System.out.println("Поиск по имени и дате - 3");
+                            opredelitel = scanner.nextInt();
+                            String date, name;
+                            switch (opredelitel){
+                                case 1:
+                                    date = enterDate.enterDate();
+                                    labReportRepository.SearchRecordingToDate(date);
+                                    break;
+                                case 2:
+                                    name = enterFullName.enterFullName();
+                                    labReportRepository.SearchRecordingToName(name);
+                                    break;
+
+                                case 3:
+                                    date = enterDate.enterDate();
+                                    name = enterFullName.enterFullName();
+                                    labReportRepository.SearchRecording(date,name);
+                                    break;
+                                default:
+                                    System.out.println("Некорректный номер функции повторите попытку");
+                                    break;
+                            }
+
 
                             break;
                         case 6:

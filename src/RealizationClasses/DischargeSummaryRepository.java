@@ -1,14 +1,13 @@
 package RealizationClasses;
 
 import Entities.DischargeSummary;
+import HelperClasses.ComparatorEntitiesDate;
+import HelperClasses.ComparatorEntitiesName;
 import HelperClasses.EnterDate;
 import HelperClasses.EnterFullName;
 import Interfaces.SearchableMedicalRepository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class DischargeSummaryRepository implements SearchableMedicalRepository<DischargeSummary> {
 
@@ -22,7 +21,8 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     public DischargeSummary SearchRecording(String date, String fullName) {
 
         for (DischargeSummary dischargeSummary : ListDishargeSummary){
-            if(Objects.equals(dischargeSummary.getDate(), date) && Objects.equals(dischargeSummary.getFullName(), fullName)){
+            if(Objects.equals(dischargeSummary.getDate(), date) && Objects.equals(dischargeSummary.getFullNamePatient(), fullName)){
+                System.out.println(dischargeSummary.toString());
                 return dischargeSummary;
             }
         }
@@ -30,17 +30,46 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     }
 
     @Override
+    public void SearchRecordingToName(String name) {
+
+        for (DischargeSummary dischargeSummary : ListDishargeSummary){
+            if( Objects.equals(dischargeSummary.getFullNamePatient(),name)){
+                System.out.println(dischargeSummary.toString());
+            }
+        }
+
+    }
+
+    @Override
+    public void SearchRecordingToDate(String date) {
+
+        for (DischargeSummary dischargeSummary : ListDishargeSummary){
+            if( Objects.equals(dischargeSummary.getDate(),date)){
+                System.out.println(dischargeSummary.toString());
+            }
+        }
+    }
+
+    @Override
     public void SortRecordings() {
 
-        for (int i = 0; i < ListDishargeSummary.size() - 1; i++) {
-            for (int j = 0; j < ListDishargeSummary.size() - i - 1; j++) {
-                if (ListDishargeSummary.get(j).getFullName().compareTo(ListDishargeSummary.get(j + 1).getFullName()) > 0) {
+        scanner = new Scanner(System.in);
+        System.out.println("Сортировка по имени - 1");
+        System.out.println("Сортировка по дате - 2");
+        int opredelitel = scanner.nextInt();
 
-                   DischargeSummary temp = ListDishargeSummary.get(j);
-                    ListDishargeSummary.set(j, ListDishargeSummary.get(j + 1));
-                    ListDishargeSummary.set(j + 1, temp);
-                }
-            }
+        switch (opredelitel){
+            case 1:
+                Collections.sort(ListDishargeSummary,new ComparatorEntitiesName());
+                break;
+            case 2:
+                Collections.sort(ListDishargeSummary,new ComparatorEntitiesDate());
+                break;
+
+            default:
+                System.out.println("Некорректный номер функции повторите попытку");
+                break;
+
         }
     }
 
@@ -64,7 +93,7 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
 
             dischargeSummary.setDate(date);
             dischargeSummary.setCommentaries(commentaries);
-            dischargeSummary.setFullName(fullName);
+            dischargeSummary.setFullNamePatient(fullName);
         }
         else{
             System.out.print("Такой записи не существует: ");
@@ -127,6 +156,7 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
                 DischargeSummary dischargeSummary = SearchRecording(date,fullName);
 
                 if(dischargeSummary != null){
+                    System.out.println( "Удалён");
                     ListDishargeSummary.remove(dischargeSummary);
                 }
                 else{

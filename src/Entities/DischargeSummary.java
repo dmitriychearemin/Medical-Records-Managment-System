@@ -1,6 +1,8 @@
 package Entities;
 
-public class DischargeSummary {
+import Interfaces.EntitiesInterface;
+
+public class DischargeSummary implements EntitiesInterface {
 
     private String Date;
     private String FullName;
@@ -20,7 +22,7 @@ public class DischargeSummary {
         Commentaries = commentaries;
     }
 
-    public void setFullName(String fullName) {
+    public void setFullNamePatient(String fullName) {
         FullName = fullName;
     }
 
@@ -32,7 +34,7 @@ public class DischargeSummary {
         return Date;
     }
 
-    public String getFullName() {
+    public String getFullNamePatient() {
         return FullName;
     }
 
