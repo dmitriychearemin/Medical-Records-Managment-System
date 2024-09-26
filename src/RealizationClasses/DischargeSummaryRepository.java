@@ -15,8 +15,8 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
 
     private List<DischargeSummary> ListDishargeSummary = new LinkedList<>();
     Scanner scanner = new Scanner(System.in);
-    EnterFullName enterFullName;
-    EnterDate enterDate;
+    EnterFullName enterFullName = new EnterFullName();
+    EnterDate enterDate = new EnterDate();
 
     @Override
     public DischargeSummary SearchRecording(String date, String fullName) {

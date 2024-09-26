@@ -17,8 +17,8 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
 
     private List<LabReport> ListLabReport = new LinkedList<>();
     Scanner scanner = new Scanner(System.in);
-    EnterFullName enterFullName;
-    EnterDate enterDate;
+    EnterFullName enterFullName = new EnterFullName();
+    EnterDate enterDate = new EnterDate();
 
     @Override
     public LabReport SearchRecording(String date, String fullName) {

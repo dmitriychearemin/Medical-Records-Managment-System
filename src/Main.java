@@ -97,7 +97,7 @@ public class Main {
                     break;
 
                 case 2:
-                    switch (opredelitel2) {
+                    switch (opredelitel1) {
                         case 1:
                             dischargeSummaryRepository.AddNewRecording();
                             break;
@@ -125,7 +125,7 @@ public class Main {
                     break;
 
                 case 3:
-                    switch (opredelitel2) {
+                    switch (opredelitel1) {
                         case 1:
                             labReportRepository.AddNewRecording();
                             break;
