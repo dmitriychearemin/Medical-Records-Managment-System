@@ -3,14 +3,13 @@ package RealizationClasses;
 import Entities.DischargeSummary;
 import Entities.LabReport;
 import Entities.Prescription;
+import HelperClasses.ComparatorEntitiesDate;
+import HelperClasses.ComparatorEntitiesName;
 import HelperClasses.EnterDate;
 import HelperClasses.EnterFullName;
 import Interfaces.SearchableMedicalRepository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class PrescriptionRepository implements SearchableMedicalRepository<Prescription> {
 
@@ -23,25 +22,55 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
     public Prescription SearchRecording(String date, String fullName) {
         for (Prescription prescription: ListPrescription){
             if(Objects.equals(prescription.getDate(), date) && Objects.equals(prescription.getFullNamePatient(), fullName)){
+                System.out.println(prescription.toString());
                 return prescription;
             }
         }
         return null;
+    }
+
+    @Override
+    public void SearchRecordingToName(String name) {
+
+        for (Prescription prescription : ListPrescription){
+            if( Objects.equals(prescription.getFullNamePatient(),name)){
+                System.out.println(prescription.toString());
+            }
+        }
 
     }
 
     @Override
-    public void SortRecordings() {
-        for (int i = 0; i < ListPrescription.size() - 1; i++) {
-            for (int j = 0; j < ListPrescription.size() - i - 1; j++) {
-                if (ListPrescription.get(j).getFullNamePatient().compareTo(ListPrescription.get(j + 1).getFullNamePatient()) > 0) {
+    public void SearchRecordingToDate(String date) {
 
-                    Prescription temp = ListPrescription.get(j);
-                    ListPrescription.set(j, ListPrescription.get(j + 1));
-                    ListPrescription.set(j + 1, temp);
-                }
+        for (Prescription prescription : ListPrescription){
+            if( Objects.equals(prescription.getDate(),date)){
+                System.out.println(prescription.toString());
             }
         }
+    }
+
+    @Override
+    public void SortRecordings() {
+
+        scanner = new Scanner(System.in);
+        System.out.println("Сортировка по имени - 1");
+        System.out.println("Сортировка по дате - 2");
+        int opredelitel = scanner.nextInt();
+
+        switch (opredelitel){
+            case 1:
+                Collections.sort(ListPrescription,new ComparatorEntitiesName());
+                break;
+            case 2:
+                Collections.sort(ListPrescription,new ComparatorEntitiesDate());
+                break;
+
+            default:
+                System.out.println("Некорректный номер функции повторите попытку");
+                break;
+        }
+
     }
 
     @Override
@@ -124,6 +153,7 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
                 String fullName =  enterFullName.enterFullName();
                 Prescription prescription = SearchRecording(date,fullName);
                 if(prescription != null){
+                    System.out.println( "Удалён");
                     ListPrescription.remove(prescription);
                 }
                 else{

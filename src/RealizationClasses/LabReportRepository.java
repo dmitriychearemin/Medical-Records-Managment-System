@@ -3,14 +3,13 @@ package RealizationClasses;
 import Entities.DischargeSummary;
 import Entities.LabReport;
 import Entities.Prescription;
+import HelperClasses.ComparatorEntitiesDate;
+import HelperClasses.ComparatorEntitiesName;
 import HelperClasses.EnterDate;
 import HelperClasses.EnterFullName;
 import Interfaces.SearchableMedicalRepository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class LabReportRepository implements SearchableMedicalRepository<LabReport> {
 
@@ -24,6 +23,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     public LabReport SearchRecording(String date, String fullName) {
         for (LabReport labReport : ListLabReport){
             if(Objects.equals(labReport.getDate(), date) && Objects.equals(labReport.getFullNamePatient(), fullName)){
+                System.out.println(labReport.toString());
                 return labReport;
             }
         }
@@ -31,21 +31,49 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     }
 
     @Override
-    public void SortRecordings() {
+    public void SearchRecordingToName(String name) {
 
-        for (int i = 0; i < ListLabReport.size() - 1; i++) {
-            for (int j = 0; j < ListLabReport.size() - i - 1; j++) {
-                if (ListLabReport.get(j).getFullNamePatient().compareTo(ListLabReport.get(j + 1).getFullNamePatient()) > 0) {
-                    // Меняем местами элементы, если они в неправильном порядке
-                    LabReport temp = ListLabReport.get(j);
-                    ListLabReport.set(j, ListLabReport.get(j + 1));
-                    ListLabReport.set(j + 1, temp);
-                }
+        for (LabReport labReport : ListLabReport){
+            if( Objects.equals(labReport.getFullNamePatient(),name)){
+                System.out.println(labReport.toString());
             }
         }
 
     }
 
+    @Override
+    public void SearchRecordingToDate(String date) {
+
+        for (LabReport labReport : ListLabReport){
+            if( Objects.equals(labReport.getDate(),date)){
+                System.out.println(labReport.toString());
+            }
+        }
+    }
+
+    @Override
+    public void SortRecordings() {
+
+        scanner = new Scanner(System.in);
+        System.out.println("Сортировка по имени - 1");
+        System.out.println("Сортировка по дате - 2");
+        int opredelitel = scanner.nextInt();
+
+        switch (opredelitel){
+            case 1:
+                Collections.sort(ListLabReport,new ComparatorEntitiesName());
+                break;
+            case 2:
+                Collections.sort(ListLabReport,new ComparatorEntitiesDate());
+                break;
+
+            default:
+                System.out.println("Некорректный номер функции повторите попытку");
+                break;
+
+        }
+
+    }
 
     @Override
     public void UpdateRecording() {
@@ -129,6 +157,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
                 LabReport labReport = SearchRecording(date,fullName);
 
                 if(labReport != null){
+                    System.out.println( "Удалён");
                     ListLabReport.remove(labReport);
                 }
                 else{

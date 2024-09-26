@@ -1,6 +1,8 @@
 package Entities;
 
-public class Prescription {
+import Interfaces.EntitiesInterface;
+
+public class Prescription implements EntitiesInterface {
 
     private String Date;
     private String FullNamePatient;
