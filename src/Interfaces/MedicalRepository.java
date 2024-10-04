@@ -1,14 +1,16 @@
 package Interfaces;
 
+import java.util.List;
+
 public interface MedicalRepository <T>{
 
-        public void UpdateRecording();
+        public void UpdateRecording(T obj);
 
-        public void AddNewRecording();
+        public void AddNewRecording(T obj);
 
-        public void ReadRecordings();
+        public List<T> ReadRecordings();
 
-        public void DeleteRecording();
+        public void DeleteRecording(T obj);
 
 
 }

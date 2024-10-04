@@ -14,8 +14,14 @@ public class Prescription implements EntitiesInterface {
         Recipe = recipe;
     }
 
+
     public void setFullNamePatient(String fullNamePatient) {
         FullNamePatient = fullNamePatient;
+    }
+
+    @Override
+    public void setCommentaries(String commentory) {
+        Recipe = commentory;
     }
 
     public void setDate(String date) {

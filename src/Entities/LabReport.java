@@ -27,6 +27,11 @@ public class LabReport implements EntitiesInterface {
         FullNamePatient = fullNamePatient;
     }
 
+    @Override
+    public void setCommentaries(String commentory) {
+        AnalysResult = commentory;
+    }
+
     public String getDate() {
         return Date;
     }
