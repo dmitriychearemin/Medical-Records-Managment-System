@@ -79,6 +79,7 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
         System.out.print("Ввод обновлённой записи: ");
         System.out.print("Обновлённая запись: ");
         String date = enterDate.enterDate();
+        scanner.nextLine();
         String fullName = enterFullName.enterFullName();
         System.out.print("Введите результаты выписки: ");
         String commentaries = scanner.nextLine();
