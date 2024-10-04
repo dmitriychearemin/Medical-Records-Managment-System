@@ -7,8 +7,14 @@
 */
 
 
+import Entities.DischargeSummary;
+import Entities.LabReport;
+import Entities.Prescription;
 import HelperClasses.EnterDate;
 import HelperClasses.EnterFullName;
+import Interfaces.EntitiesInterface;
+import Interfaces.MedicalRepository;
+import Interfaces.SearchableMedicalRepository;
 import RealizationClasses.DischargeSummaryRepository;
 import RealizationClasses.LabReportRepository;
 import RealizationClasses.PrescriptionRepository;
@@ -16,6 +22,7 @@ import RealizationClasses.PrescriptionRepository;
 import java.io.Console;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -24,10 +31,9 @@ public class Main {
         LabReportRepository labReportRepository = new LabReportRepository();
         PrescriptionRepository prescriptionRepository = new PrescriptionRepository();
 
-        UserInterface(dischargeSummaryRepository,labReportRepository,prescriptionRepository);
+        UserInterface(dischargeSummaryRepository, labReportRepository, prescriptionRepository);
 
     }
-
 
 
     static void UserInterface(DischargeSummaryRepository dischargeSummaryRepository,
@@ -38,8 +44,35 @@ public class Main {
         int opredelitel1, opredelitel2;
         EnterDate enterDate = new EnterDate();
         EnterFullName enterFullName = new EnterFullName();
-        //ConsoleReader reader = new ConsoleReader();
-        while(true){
+        SearchableMedicalRepository repository = null;
+        EntitiesInterface entitie = null;
+        String date, fullName, commentary;
+
+
+        while (true) {
+            System.out.println("Работа с рецептами - 1");
+            System.out.println("Работа с выписками - 2");
+            System.out.println("Работа с анализами - 3");
+            opredelitel1 = scanner.nextInt();
+
+            switch (opredelitel1) {
+                case 1:
+                    repository = prescriptionRepository;
+                    entitie = new Prescription("","","");
+                    break;
+                case 2:
+                    repository = dischargeSummaryRepository;
+                     entitie = new DischargeSummary("","","");
+                    break;
+
+                case 3:
+                    repository = labReportRepository;
+                    entitie = new LabReport("","","");
+                    break;
+                default:
+                    System.out.println("Некорректный номер функции повторите попытку");
+                    break;
+            }
 
             System.out.println("Создать запись - 1");
             System.out.println("Прочитать записи - 2");
@@ -47,54 +80,102 @@ public class Main {
             System.out.println("Удалить запись - 4");
             System.out.println("Найти запись - 5");
             System.out.println("Сортировка записей - 6");
-            System.out.println("Очистка консоли - 7");
-            opredelitel1 = scanner.nextInt();
 
-            /*if(opredelitel1 ==7){
-                reader.clearScreen();
-                continue;
-            }*/
-
-            System.out.println("Работа с рецептами - 1");
-            System.out.println("Работа с выписками - 2");
-            System.out.println("Работа с анализами - 3");
             opredelitel2 = scanner.nextInt();
             int opredelitel;
-            switch (opredelitel2){
-                case 1:
-                    switch (opredelitel1) {
+                    switch (opredelitel2) {
                         case 1:
-                            prescriptionRepository.AddNewRecording();
+                            date = enterDate.enterDate();
+                            fullName =  enterFullName.enterFullName();
+                            scanner.nextLine();
+                            System.out.print("Введите комментарий: ");
+                            commentary = scanner.nextLine();
+                            entitie.setDate(date);
+                            entitie.setFullNamePatient(fullName);
+                            entitie.setCommentaries(commentary);
+                            repository.AddNewRecording(entitie);
                             break;
+
                         case 2:
-                            prescriptionRepository.ReadRecordings();
+                            System.out.println("Все выписки");
+                            for(int i =0; i<repository.ReadRecordings().size();i++){
+                                System.out.println("Номер выписки: " + (i+1) + repository.ReadRecordings().get(i).toString());
+                            }
                             break;
+
                         case 3:
-                            prescriptionRepository.UpdateRecording();
+                            date = enterDate.enterDate();
+                            fullName =  enterFullName.enterFullName();
+                            entitie = (EntitiesInterface) repository.SearchRecording(date,fullName);
+                            if(entitie!=null) {
+                                System.out.print("Запись была найдена: \n");
+                                repository.UpdateRecording(entitie);
+
+                            }
+                            else{
+                                System.out.print("Такой записи не существует: ");
+                            }
+
                             break;
                         case 4:
-                            prescriptionRepository.DeleteRecording();
+                            opredelitel = 0;
+                            System.out.println("Если хотите удалить выписку по номеру - 1");
+                            System.out.println("Если хотите удалить выписку по ФИО и Дате - 2");
+                            opredelitel = scanner.nextInt();
+
+                            switch (opredelitel){
+                                case 1:
+                                    System.out.println("Введите номер выписки");
+                                    int number;
+                                    number = scanner.nextInt();
+                                    if(number > 0 && number <= repository.ReadRecordings().size()){
+                                        repository.ReadRecordings().remove(number-1);
+                                    }
+                                    else{
+                                        System.out.println("Элемент не был найден");
+                                    }
+                                    break;
+
+                                case 2:
+                                    date = enterDate.enterDate();
+                                    fullName =  enterFullName.enterFullName();
+
+                                    entitie = (EntitiesInterface) repository.SearchRecording(date,fullName);
+
+                                    if(entitie != null){
+                                        System.out.println( "Удалён");
+                                        repository.DeleteRecording(entitie);
+                                    }
+                                    else{
+                                        System.out.println("Элемент не был найден");
+                                    }
+                                    break;
+
+                                default:
+                                    System.out.println("Некорректный номер функции повторите попытку");
+                                    break;
+                            }
+
                             break;
                         case 5:
                             System.out.println("Поиск по датам - 1");
                             System.out.println("Поиск по имени - 2");
                             System.out.println("Поиск по имени и дате - 3");
                             opredelitel = scanner.nextInt();
-                            String date, name;
-                            switch (opredelitel){
+                            switch (opredelitel) {
                                 case 1:
                                     date = enterDate.enterDate();
-                                    prescriptionRepository.SearchRecordingToDate(date);
+                                    repository.SearchRecordingToDate(date);
                                     break;
                                 case 2:
-                                    name = enterFullName.enterFullName();
-                                    prescriptionRepository.SearchRecordingToName(name);
+                                    fullName = enterFullName.enterFullName();
+                                    repository.SearchRecordingToName(fullName);
                                     break;
 
                                 case 3:
                                     date = enterDate.enterDate();
-                                    name = enterFullName.enterFullName();
-                                    prescriptionRepository.SearchRecording(date,name);
+                                    fullName = enterFullName.enterFullName();
+                                    repository.SearchRecording(date, fullName);
                                     break;
 
                                 default:
@@ -104,124 +185,13 @@ public class Main {
                             break;
 
                         case 6:
-                            prescriptionRepository.SortRecordings();
+                            repository.SortRecordings();
                             break;
                         default:
                             System.out.println("Некорректный номер функции повторите попытку");
                             break;
                     }
-                    break;
-
-                case 2:
-                    switch (opredelitel1) {
-                        case 1:
-                            dischargeSummaryRepository.AddNewRecording();
-                            break;
-                        case 2:
-                            dischargeSummaryRepository.ReadRecordings();
-                            break;
-                        case 3:
-                            dischargeSummaryRepository.UpdateRecording();
-                            break;
-                        case 4:
-                            dischargeSummaryRepository.DeleteRecording();
-                            break;
-                        case 5:
-                            System.out.println("Поиск по датам - 1");
-                            System.out.println("Поиск по имени - 2");
-                            System.out.println("Поиск по имени и дате - 3");
-                            opredelitel = scanner.nextInt();
-                            String date, name;
-                            switch (opredelitel){
-                                case 1:
-                                    date = enterDate.enterDate();
-                                    dischargeSummaryRepository.SearchRecordingToDate(date);
-                                    break;
-                                case 2:
-                                    name = enterFullName.enterFullName();
-                                    dischargeSummaryRepository.SearchRecordingToName(name);
-                                    break;
-
-                                case 3:
-                                    date = enterDate.enterDate();
-                                    name = enterFullName.enterFullName();
-                                    dischargeSummaryRepository.SearchRecording(date,name);
-                                    break;
-
-                                default:
-                                    System.out.println("Некорректный номер функции повторите попытку");
-                                    break;
-                            }
-
-                            break;
-                        case 6:
-                            dischargeSummaryRepository.SortRecordings();
-                            break;
-                        default:
-                            System.out.println("Некорректный номер функции повторите попытку");
-                            break;
-                    }
-                    break;
-
-                case 3:
-                    switch (opredelitel1) {
-                        case 1:
-                            labReportRepository.AddNewRecording();
-                            break;
-                        case 2:
-                            labReportRepository.ReadRecordings();
-                            break;
-                        case 3:
-                            labReportRepository.UpdateRecording();
-                            break;
-                        case 4:
-                            labReportRepository.DeleteRecording();
-                            break;
-                        case 5:
-                            System.out.println("Поиск по датам - 1");
-                            System.out.println("Поиск по имени - 2");
-                            System.out.println("Поиск по имени и дате - 3");
-                            opredelitel = scanner.nextInt();
-                            String date, name;
-                            switch (opredelitel){
-                                case 1:
-                                    date = enterDate.enterDate();
-                                    labReportRepository.SearchRecordingToDate(date);
-                                    break;
-                                case 2:
-                                    name = enterFullName.enterFullName();
-                                    labReportRepository.SearchRecordingToName(name);
-                                    break;
-
-                                case 3:
-                                    date = enterDate.enterDate();
-                                    name = enterFullName.enterFullName();
-                                    labReportRepository.SearchRecording(date,name);
-                                    break;
-                                default:
-                                    System.out.println("Некорректный номер функции повторите попытку");
-                                    break;
-                            }
-
-
-                            break;
-                        case 6:
-                            labReportRepository.SortRecordings();
-                            break;
-                        default:
-                            System.out.println("Некорректный номер функции повторите попытку");
-                            break;
-                    }
-                    break;
-
-                default:
-                    System.out.println("Некорректный номер функции повторите попытку");
-                    break;
-            }
-
-
         }
-
     }
 
 }

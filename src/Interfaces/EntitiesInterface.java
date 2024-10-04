@@ -10,4 +10,6 @@ public interface EntitiesInterface {
 
     public void setFullNamePatient(String fullNamePatient);
 
+    public void setCommentaries(String commentory);
+
 }

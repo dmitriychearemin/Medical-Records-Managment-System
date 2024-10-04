@@ -14,12 +14,13 @@ public class DischargeSummary implements EntitiesInterface {
         Commentaries = commentaries;
     }
 
+
     public void setDate(String date){
         Date = date;
     }
 
-    public void setCommentaries(String commentaries) {
-        Commentaries = commentaries;
+    public void setCommentaries(String commentary) {
+        Commentaries = commentary;
     }
 
     public void setFullNamePatient(String fullName) {

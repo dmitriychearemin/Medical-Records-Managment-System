@@ -76,18 +76,11 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
     }
 
     @Override
-    public void UpdateRecording() {
+    public void UpdateRecording(LabReport labReport) {
 
-        String date = enterDate.enterDate();
-        String fullName =  enterFullName.enterFullName();
-
-        LabReport labReport = SearchRecording(date,fullName);
-
-        if(labReport!=null){
-            System.out.print("Запись была найдена: \n");
             System.out.print("Ввод обновлённой записи: ");
-            date = enterDate.enterDate();
-            fullName =  enterFullName.enterFullName();
+            String date = enterDate.enterDate();
+            String fullName =  enterFullName.enterFullName();
 
             System.out.print("Введите результаты анализа: ");
             String analys = scanner.nextLine();
@@ -95,80 +88,22 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
             labReport.setDate(date);
             labReport.setAnalysResult(analys);
             labReport.setFullNamePatient(fullName);
-        }
-        else{
-            System.out.print("Такой записи не существует: ");
-        }
-
 
     }
 
     @Override
-    public void AddNewRecording() {
-        String date = enterDate.enterDate();
-        String fullName =  enterFullName.enterFullName();
-
-        System.out.print("Введите результаты анализа: ");
-        String analysResult = scanner.nextLine();
-
-        LabReport labReport = new LabReport(date,fullName,analysResult);
-        ListLabReport.add(labReport);
-
-        System.out.println("Вы ввели:");
-        System.out.println("Дата выписки: " + date);
-        System.out.println("Имя: " + fullName);
-        System.out.println("Комментарий: " + analysResult);
+    public void AddNewRecording(LabReport labReport) {
+       ListLabReport.add(labReport);
     }
 
     @Override
-    public void ReadRecordings() {
-        System.out.println("Все Анализы");
-        for(int i =0; i<ListLabReport.size();i++){
-            System.out.println("Номер анализа: " + (i+1) + ListLabReport.get(i).toString());
+    public List<LabReport> ReadRecordings() {
 
-        }
-
+        return ListLabReport;
     }
 
     @Override
-    public void DeleteRecording() {
-        int opredelitel = 0;
-        System.out.println("Если хотите удалить анализ по номеру - 1");
-        System.out.println("Если хотите удалить анализ по ФИО и Дате - 2");
-        opredelitel = scanner.nextInt();
-
-        switch (opredelitel){
-            case 1:
-                System.out.println("Введите номер анализа");
-                int number;
-                number = scanner.nextInt();
-                if(number > 0 && number <= ListLabReport.size()){
-                    ListLabReport.remove(number-1);
-                }
-                else{
-                    System.out.println("Элемент не был найден");
-                }
-                break;
-
-
-            case 2:
-                String date = enterDate.enterDate();
-                String fullName =  enterFullName.enterFullName();
-                LabReport labReport = SearchRecording(date,fullName);
-
-                if(labReport != null){
-                    System.out.println( "Удалён");
-                    ListLabReport.remove(labReport);
-                }
-                else{
-                    System.out.println("Элемент не был найден");
-                }
-                break;
-
-            default:
-                System.out.println("Некорректный номер функции повторите попытку");
-                break;
-        }
-
+    public void DeleteRecording(LabReport labReport) {
+        ListLabReport.remove(labReport);
     }
 }
