@@ -81,7 +81,7 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
             System.out.print("Ввод обновлённой записи: ");
             String date = enterDate.enterDate();
             String fullName =  enterFullName.enterFullName();
-
+            scanner.nextLine();
             System.out.print("Введите результаты анализа: ");
             String analys = scanner.nextLine();
 
