@@ -79,6 +79,7 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
             System.out.print("Ввод обновлённой записи: ");
             String date = enterDate.enterDate();
             String fullName =  enterFullName.enterFullName();
+            scanner.nextLine();
             System.out.print("Введите рецепт: ");
             String recipe = scanner.nextLine();
 
