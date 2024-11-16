@@ -21,34 +21,56 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
 
     @Override
     public LabReport SearchRecording(String date, String fullName) {
+
+        /*
         for (LabReport labReport : ListLabReport){
             if(Objects.equals(labReport.getDate(), date) && Objects.equals(labReport.getFullNamePatient(), fullName)){
                 System.out.println(labReport.toString());
                 return labReport;
             }
         }
-        return null;
+        return null;*/
+
+        return ListLabReport.stream()
+                .filter(labReport ->
+                        Objects.equals(labReport.getDate(), date) &&
+                                Objects.equals(labReport.getFullNamePatient(), fullName))
+                .findFirst()
+                .map(dischargeSummary -> {
+                    System.out.println(dischargeSummary.toString());
+                    return dischargeSummary;
+                })
+                .orElse(null);
     }
 
     @Override
     public void SearchRecordingToName(String name) {
 
-        for (LabReport labReport : ListLabReport){
+
+        /*for (LabReport labReport : ListLabReport){
             if( Objects.equals(labReport.getFullNamePatient(),name)){
                 System.out.println(labReport.toString());
             }
-        }
+        }*/
+
+        ListLabReport.stream()
+                .filter(labReport -> Objects.equals(labReport.getFullNamePatient(),name))
+                .forEach(System.out::println);
 
     }
 
     @Override
     public void SearchRecordingToDate(String date) {
 
-        for (LabReport labReport : ListLabReport){
+        /*for (LabReport labReport : ListLabReport){
             if( Objects.equals(labReport.getDate(),date)){
                 System.out.println(labReport.toString());
             }
-        }
+        }*/
+
+        ListLabReport.stream()
+                .filter(labReport -> Objects.equals(labReport.getDate(),date))
+                .forEach(System.out::println);
     }
 
     @Override
@@ -61,10 +83,16 @@ public class LabReportRepository implements SearchableMedicalRepository<LabRepor
 
         switch (opredelitel){
             case 1:
-                Collections.sort(ListLabReport,new ComparatorEntitiesName());
+                ListLabReport = ListLabReport.stream()
+                        .sorted(new ComparatorEntitiesName())
+                        .toList();
+                System.out.println("Список отсортирован по имени.");
                 break;
             case 2:
-                Collections.sort(ListLabReport,new ComparatorEntitiesDate());
+                ListLabReport = ListLabReport.stream()
+                        .sorted(new ComparatorEntitiesDate())
+                        .toList();
+                System.out.println("Список отсортирован по дате.");
                 break;
 
             default:

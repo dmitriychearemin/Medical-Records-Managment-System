@@ -20,34 +20,55 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
 
     @Override
     public Prescription SearchRecording(String date, String fullName) {
-        for (Prescription prescription: ListPrescription){
+
+        /*for (Prescription prescription: ListPrescription){
             if(Objects.equals(prescription.getDate(), date) && Objects.equals(prescription.getFullNamePatient(), fullName)){
                 System.out.println(prescription.toString());
                 return prescription;
             }
         }
-        return null;
+        return null;*/
+
+        return ListPrescription.stream()
+                .filter(prescription ->
+                        Objects.equals(prescription.getDate(), date) &&
+                                Objects.equals(prescription.getFullNamePatient(), fullName))
+                .findFirst()
+                .map(dischargeSummary -> {
+                    System.out.println(dischargeSummary.toString());
+                    return dischargeSummary;
+                })
+                .orElse(null);
+
     }
 
     @Override
     public void SearchRecordingToName(String name) {
 
-        for (Prescription prescription : ListPrescription){
+        /*for (Prescription prescription : ListPrescription){
             if( Objects.equals(prescription.getFullNamePatient(),name)){
                 System.out.println(prescription.toString());
             }
-        }
+        }*/
+
+        ListPrescription.stream()
+                .filter(prescription -> Objects.equals(prescription.getFullNamePatient(),name))
+                .forEach(System.out::println);
 
     }
 
     @Override
     public void SearchRecordingToDate(String date) {
-
+        /*
         for (Prescription prescription : ListPrescription){
             if( Objects.equals(prescription.getDate(),date)){
                 System.out.println(prescription.toString());
             }
-        }
+        }*/
+        ListPrescription.stream()
+                .filter(prescription -> Objects.equals(prescription.getDate(),date))
+                .forEach(System.out::println);
+
     }
 
     @Override
@@ -60,10 +81,16 @@ public class PrescriptionRepository implements SearchableMedicalRepository<Presc
 
         switch (opredelitel){
             case 1:
-                Collections.sort(ListPrescription,new ComparatorEntitiesName());
+               ListPrescription = ListPrescription.stream()
+                        .sorted(new ComparatorEntitiesName())
+                        .toList();
+                System.out.println("Список отсортирован по имени.");
                 break;
             case 2:
-                Collections.sort(ListPrescription,new ComparatorEntitiesDate());
+                ListPrescription = ListPrescription.stream()
+                        .sorted(new ComparatorEntitiesDate())
+                        .toList();
+                System.out.println("Список отсортирован по дате.");
                 break;
 
             default:

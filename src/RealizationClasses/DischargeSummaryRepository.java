@@ -20,34 +20,61 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
     @Override
     public DischargeSummary SearchRecording(String date, String fullName) {
 
+        /* БЫЛО
         for (DischargeSummary dischargeSummary : ListDishargeSummary){
             if(Objects.equals(dischargeSummary.getDate(), date) && Objects.equals(dischargeSummary.getFullNamePatient(), fullName)){
                 System.out.println(dischargeSummary.toString());
                 return dischargeSummary;
             }
         }
-        return null;
+        return null;*/
+
+        //СТАЛО
+        return ListDishargeSummary.stream()
+                .filter(dischargeSummary ->
+                        Objects.equals(dischargeSummary.getDate(), date) &&
+                                Objects.equals(dischargeSummary.getFullNamePatient(), fullName))
+                .findFirst()
+                .map(dischargeSummary -> {
+                    System.out.println(dischargeSummary.toString());
+                    return dischargeSummary;
+                })
+                .orElse(null);
     }
 
     @Override
     public void SearchRecordingToName(String name) {
 
-        for (DischargeSummary dischargeSummary : ListDishargeSummary){
+        //Было
+        /*for (DischargeSummary dischargeSummary : ListDishargeSummary){
             if( Objects.equals(dischargeSummary.getFullNamePatient(),name)){
                 System.out.println(dischargeSummary.toString());
             }
-        }
+        }*/
+
+         ListDishargeSummary.stream()
+                .filter(dischargeSummary -> Objects.equals(dischargeSummary.getFullNamePatient(),name))
+                .forEach(System.out::println);
 
     }
 
     @Override
     public void SearchRecordingToDate(String date) {
 
+        /* БЫЛО
         for (DischargeSummary dischargeSummary : ListDishargeSummary){
             if( Objects.equals(dischargeSummary.getDate(),date)){
                 System.out.println(dischargeSummary.toString());
             }
         }
+         */
+
+        //СТАЛО
+
+        ListDishargeSummary.stream()
+                .filter(dischargeSummary -> Objects.equals(dischargeSummary.getDate(),date))
+                .forEach(System.out::println);
+
     }
 
     @Override
@@ -60,12 +87,17 @@ public class DischargeSummaryRepository implements SearchableMedicalRepository<D
 
         switch (opredelitel){
             case 1:
-                Collections.sort(ListDishargeSummary,new ComparatorEntitiesName());
+                ListDishargeSummary = ListDishargeSummary.stream()
+                        .sorted(new ComparatorEntitiesName())
+                        .toList();
+                System.out.println("Список отсортирован по имени.");
                 break;
             case 2:
-                Collections.sort(ListDishargeSummary,new ComparatorEntitiesDate());
+                ListDishargeSummary = ListDishargeSummary.stream()
+                        .sorted(new ComparatorEntitiesDate())
+                        .toList();
+                System.out.println("Список отсортирован по дате.");
                 break;
-
             default:
                 System.out.println("Некорректный номер функции повторите попытку");
                 break;
